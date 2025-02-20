@@ -25,9 +25,12 @@ class AnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request, Question $question) {
+        $question->answers()->create($request->validate([
+            'content' => 'required',
+        ]) + ['user_id' => auth()->id()]);
+
+        return redirect()->route('questions.show', $question);
     }
 
     /**
@@ -62,3 +65,7 @@ class AnswerController extends Controller
         //
     }
 }
+
+
+
+
